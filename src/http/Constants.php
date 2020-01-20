@@ -31,6 +31,12 @@ class Constants
     const ERROR_BAD                 = 'ERROR: ';
     const ERROR_UNKNOWN             = 'ERROR: unknown';
     const ERROR_INVALID_URI         = 'ERROR: invalid uri string';
+    const ERROR_BAD_DIR             = 'ERROR: Directory should be both readble and writable';
+    const ERROR_BAD_FILE            = 'ERROR: Bad file';
+    const ERROR_FILE_NOT            = 'ERROR: File not uploaded';
+    const ERROR_MOVE_DONE           = 'ERROR: File already moved';
+    const ERROR_MOVE_UNABLE         = 'ERROR: Unable to move file';
+    const ERROR_BODY_UNREADABLE     = 'ERROR: Could not read the body of the message';
     const STATUS_CODES              = [
         200 => 'OK',
         301 => 'Moved Permanently',
