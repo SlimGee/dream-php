@@ -8,8 +8,10 @@ use Dream\Http\TextStream;
 use Dream\Http\Constants;
 use Dream\Http\Message;
 
-$message = new Message();
-echo $message->getProtocolVersion();
-echo "<pre>";
-$message->getBody()->seek(1);
-var_dump($message->getBody()->tell());
+$uri = new Uri();
+$new = $uri->withScheme('http')
+    ->withHost('welodge')
+    ->withPath('listings')
+    ->withQuery('q=harare');
+
+echo $new;

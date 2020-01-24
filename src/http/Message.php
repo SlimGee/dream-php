@@ -43,8 +43,9 @@ class Message implements MessageInterface
      */
     public function withProtocolVersion($version)
     {
-        $this->version = $this->onlyVersion($version);
-        return $this;
+        $copy = clone $this;
+        $copy->version = $this->onlyVersion($version);
+        return $copy;
     }
 
     /**
@@ -181,12 +182,13 @@ class Message implements MessageInterface
     public function withHeader($name, $value)
     {
         $found = $this->findHeader($name);
+        $copy = clone $this;
         if ($found) {
-            $this->httpHeaders[$found] = $value;
+            $copy->httpHeaders[$found] = $value;
         } else {
-            $this->httpHeaders[$name] = $value;
+            $copy->httpHeaders[$name] = $value;
         }
-        return $this;
+        return $copy;
     }
 
     /**
@@ -208,12 +210,13 @@ class Message implements MessageInterface
     public function withAddedHeader($name, $value)
     {
         $found = $this->findHeader($name);
+        $copy = clone $this;
         if ($found) {
-            $this->httpHeaders[$found] .= $value;
+            $copy->httpHeaders[$found] .= $value;
         } else {
-            $this->httpHeaders[$name] = $value;
+            $copy->httpHeaders[$name] = $value;
         }
-        return $this;
+        return $copy;
     }
 
     /**
@@ -231,10 +234,11 @@ class Message implements MessageInterface
     public function withoutHeader($name)
     {
         $found = $this->findHeader($name);
+        $copy = clone $this;
         if ($found) {
-            unset($this->httpHeaders[$found]);
+            unset($copy->httpHeaders[$found]);
         }
-        return $this;
+        return $copy;
     }
 
     /**
@@ -262,8 +266,9 @@ class Message implements MessageInterface
         if (!$body->isReadable()) {
             throw new InvalidArgumentException(Constants::ERROR_BODY_UNREADABLE);
         }
-        $this->body = $body;
-        return $this;
+        $copy = clone $this;
+        $copy->body = $body;
+        return $copy;
     }
 
     /**

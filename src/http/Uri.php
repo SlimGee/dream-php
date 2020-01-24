@@ -170,16 +170,17 @@ class Uri implements UriInterface
      */
     public function withScheme($scheme)
     {
+        $copy = clone $this;
         if (empty($scheme) && $this->getScheme()) {
-            unset($this->uriParts['scheme']);
+            unset($copy->uriParts['scheme']);
         } else {
             if (isset(Constants::STANDARD_PORTS[strtolower($scheme)])) {
-                $this->uriParts['scheme'] = $scheme;
+                $copy->uriParts['scheme'] = $scheme;
             } else {
                 throw new InvalidArgumentException(Constants::ERROR_BAD . __METHOD__);
             }
         }
-        return $this;
+        return $copy;
     }
 
     /**
@@ -191,16 +192,16 @@ class Uri implements UriInterface
      */
     public function withUserInfo($user, $password = null)
     {
+        $copy = clone $this;
         if (empty($user) && $this->getUserInfo()) {
-            unset($this->uriParts['user']);
+            unset($copy->uriParts['user']);
         } else {
-            $this->uriParts['user'] = $user;
+            $copy->uriParts['user'] = $user;
             if ($password) {
-
-            $this->uriParts['pass'] = $password;
+            $copy->uriParts['pass'] = $password;
             }
         }
-        return $this;
+        return $copy;
     }
 
     /**
