@@ -22,7 +22,32 @@ class Request extends Message implements UriInterface
     protected $method;
 
     protected $uriObj;
-    
+
+    public function __construct($uri = null, $method = null, StreamInterface $body = null, $headers = null, $version = null)
+    {
+        $this->uri = $uri;
+        $this->method = $this->checkMethod($method);
+        $this->body = $body;
+        $this->httpHeaders = $headers;
+        $this->version = $this->onlyVersion($version);
+    }
+
+    /**
+     * Checks if method is one of known http methods
+     * @param string $method http method supplied
+     * @return string\null method
+     * @throws InvalidArgumentException on unknown method
+     */
+    protected function checkMethod($method)
+    {
+        if (!is_null($method)) {
+            if (!in_array(strtolower($method),Constants::HTTP_METHODS)) {
+                throw new InvalidArgumentException(Constants::ERROR_HTTP_METHOD, 1);
+            }
+        }
+        return $method;
+    }
+
     /**
      * Retrieves the message's request target.
      *
@@ -41,7 +66,7 @@ class Request extends Message implements UriInterface
      */
     public function getRequestTarget()
     {
-
+        return $this->uri ?? Constants::DEFAULT_REQUEST_TARGET;
     }
 
     /**
@@ -61,14 +86,23 @@ class Request extends Message implements UriInterface
      * @param mixed $requestTarget
      * @return static
      */
-    public function withRequestTarget($requestTarget);
+    public function withRequestTarget($requestTarget)
+    {
+        $copy = clone $this;
+        $copy->uri = $requestTarget;
+        $copy->getUri();
+        return $copy;
+    }
 
     /**
      * Retrieves the HTTP method of the request.
      *
      * @return string Returns the request method.
      */
-    public function getMethod();
+    public function getMethod()
+    {
+        return $this->method;
+    }
 
     /**
      * Return an instance with the provided HTTP method.
@@ -85,7 +119,12 @@ class Request extends Message implements UriInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method);
+    public function withMethod($method)
+    {
+        $copy = clone $this;
+        $copy->method = $this->checkMethod($method);
+        return $copy;
+    }
 
     /**
      * Retrieves the URI instance.
@@ -96,7 +135,13 @@ class Request extends Message implements UriInterface
      * @return UriInterface Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri();
+    public function getUri()
+    {
+        if (!$this->uriObj) {
+            $this->uriObj = new Uri($this->uri);
+        }
+        return $this->uriObj;
+    }
 
     /**
      * Returns an instance with the provided URI.
@@ -128,5 +173,18 @@ class Request extends Message implements UriInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false);
+    public function withUri(UriInterface $uri, $preserveHost = false)
+    {
+        $copy = clone $this;
+        if ($preserveHost) {
+            $found = $this->findHeader(Constants::HEADER_HOST);
+            if (!$found && $uri->getHost()) {
+                $copy->httpHeaders[Constants::HEADER_HOST] = $uri->getHost();
+            }
+        } elseif ($uri->getHost()) {
+            $copy->httpHeaders[Constants::HEADER_HOST] = $uri->getHost();
+        }
+        $copy->uri = $uri->getUriString();
+        return $copy;
+    }
 }

@@ -37,6 +37,7 @@ class Constants
     const ERROR_MOVE_DONE           = 'ERROR: File already moved';
     const ERROR_MOVE_UNABLE         = 'ERROR: Unable to move file';
     const ERROR_BODY_UNREADABLE     = 'ERROR: Could not read the body of the message';
+    const ERROR_HTTP_METHOD         = 'ERROR: Http method unknown';
     const STATUS_CODES              = [
         200 => 'OK',
         301 => 'Moved Permanently',
