@@ -191,35 +191,4 @@ class Request extends Message implements RequestInterface
         $copy->uri = $copy->uriObj->__toString();
         return $copy;
     }
-
-    /**
-     * Sends an http request and returns a response
-     * @throws Exception when sending fails
-     * @return mixed Response from server
-     */
-    public function send()
-    {
-        $headers = [];
-
-        foreach ($this->getHeaders() as $name => $values) {
-            foreach ($values as $value) {
-                $headers[] = sprintf('%s: %s', $name, $value);
-            }
-        }
-
-        $options = [
-             'http' => [
-                 'method' => strtoupper($this->getMethod()),
-                 'header' => $headers,
-                 'content' => $this->getBody()->getContents()
-             ]
-         ];
-         $context = stream_context_create($options);
-         $result = file_get_contents($this->getUri()->getUriString(),false,$context);
-         if ($result === false) {
-             $error = error_get_last();
-             throw new \Exception("Error Processing Request: " . $error, 1);
-         }
-         return $result;
-    }
 }
