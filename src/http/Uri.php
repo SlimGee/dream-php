@@ -284,7 +284,7 @@ class Uri implements UriInterface
     public function withPath($path)
     {
         $copy = clone $this;
-        $path = $this->filterPath();
+        $path = $this->filterPath($path);
         $copy->uriParts['path'] = $path;
         return $copy;
     }
