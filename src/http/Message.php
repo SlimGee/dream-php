@@ -3,6 +3,7 @@ namespace Dream\Http;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
+use InvalidArgumentException;
 
 /**
  * Http Message implementaion
