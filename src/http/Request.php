@@ -17,7 +17,7 @@ use Dream\Http\{
 /**
  *
  */
-class Request extends Message implements UriInterface
+class Request extends Message implements RequestInterface
 {
     protected $method;
 
@@ -28,7 +28,10 @@ class Request extends Message implements UriInterface
         $this->uri = $uri;
         $this->method = $this->checkMethod($method);
         $this->body = $body;
-        $this->httpHeaders = $headers;
+        $headers = is_array($headers) ? $headers : [];
+        $this->httpHeaders = array_map(function ($value){
+            return [$value];
+        },$headers);
         $this->version = $this->onlyVersion($version);
     }
 
@@ -184,7 +187,39 @@ class Request extends Message implements UriInterface
         } elseif ($uri->getHost()) {
             $copy->httpHeaders[Constants::HEADER_HOST] = $uri->getHost();
         }
-        $copy->uri = $uri->getUriString();
+        $copy->uriObj = $uri;
+        $copy->uri = $copy->uriObj->__toString();
         return $copy;
+    }
+
+    /**
+     * Sends an http request and returns a response
+     * @throws Exception when sending fails
+     * @return mixed Response from server
+     */
+    public function send()
+    {
+        $headers = [];
+
+        foreach ($this->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                $headers[] = sprintf('%s: %s', $name, $value);
+            }
+        }
+
+        $options = [
+             'http' => [
+                 'method' => strtoupper($this->getMethod()),
+                 'header' => $headers,
+                 'content' => $this->getBody()->getContents()
+             ]
+         ];
+         $context = stream_context_create($options);
+         $result = file_get_contents($this->getUri()->getUriString(),false,$context);
+         if ($result === false) {
+             $error = error_get_last();
+             throw new \Exception("Error Processing Request: " . $error, 1);
+         }
+         return $result;
     }
 }

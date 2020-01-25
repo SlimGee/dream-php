@@ -129,7 +129,7 @@ class Message implements MessageInterface
     {
         $line = $this->getHeaderLine($name);
         if ($line) {
-            return explode(',', $line);
+            return $line;
         } else {
             return [];
         }
@@ -184,9 +184,9 @@ class Message implements MessageInterface
         $found = $this->findHeader($name);
         $copy = clone $this;
         if ($found) {
-            $copy->httpHeaders[$found] = $value;
+            $copy->httpHeaders[$found][] = $value;
         } else {
-            $copy->httpHeaders[$name] = $value;
+            $copy->httpHeaders[$name][] = $value;
         }
         return $copy;
     }
@@ -212,9 +212,9 @@ class Message implements MessageInterface
         $found = $this->findHeader($name);
         $copy = clone $this;
         if ($found) {
-            $copy->httpHeaders[$found] .= $value;
+            $copy->httpHeaders[$found][] = $value;
         } else {
-            $copy->httpHeaders[$name] = $value;
+            $copy->httpHeaders[$name][] = $value;
         }
         return $copy;
     }
@@ -295,9 +295,15 @@ class Message implements MessageInterface
     {
         if (!$this->httpHeaders) {
             if (function_exists('apache_request_headers')) {
-                $this->httpHeaders = apache_request_headers();
+                $headers = apache_request_headers();
+                $this->httpHeaders = array_map(function ($value){
+                    return [$value];
+                },$headers);
             } else {
-                $this->httpHeaders = $this->altApacheReqHeaders();
+                $headers = $this->altApacheReqHeaders();
+                $this->httpHeaders = array_map(function ($value){
+                    return [$value];
+                },$headers);
             }
         }
         return $this->httpHeaders;

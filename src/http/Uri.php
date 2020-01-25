@@ -21,7 +21,7 @@ class Uri implements UriInterface
      * @throws InvalidArgumentException when invalid uri passed
      * @return void
      */
-    public function __construct(string $uriString = '')
+    public function __construct($uriString = null)
     {
         if (empty($uriString)) {
             return;
@@ -39,7 +39,7 @@ class Uri implements UriInterface
      */
     public function getScheme()
     {
-        return strtolower($this->uriParts['scheme']) ?? '';
+        return strtolower($this->uriParts['scheme'] ?? '');
     }
 
     /**
@@ -52,9 +52,9 @@ class Uri implements UriInterface
         if (!empty($this->getUserInfo())){
             $val .= $this->getUserInfo() . '@';
             $val .= $this->uriParts['host'] ?? '';
-        }
-        if (!empty($this->uriParts['port']) && !array_key_exists($this->getScheme(),Constants::STANDARD_PORTS))
+            if (!empty($this->uriParts['port']) && !array_key_exists($this->getScheme(),Constants::STANDARD_PORTS))
             $val .= ':' . $this->uriParts['port'];
+        }
         return $val;
     }
 
@@ -213,12 +213,13 @@ class Uri implements UriInterface
      */
     public function withHost($host)
     {
+        $copy = clone $this;
         if (empty($host)) {
-            unset($this->uriParts['host']);
-            return $this;
+            unset($copy->uriParts['host']);
+            return $copy;
         }
-        $this->uriParts['host'] = $host;
-        return $this;
+        $copy->uriParts['host'] = $host;
+        return $copy;
     }
 
     /**
@@ -231,13 +232,14 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
+        $copy = clone $this;
         if (is_null($port)) {
-            unset($this->uriParts['port']);
-            return $this;
+            unset($copy->uriParts['port']);
+            return $copy;
         }
         // FIXME: throw exception for ports outside range of established TCP and UDP port ranges
-        $this->uriParts['port'] = $port;
-        return $this;
+        $copy->uriParts['port'] = $port;
+        return $copy;
     }
 
     /**
@@ -264,10 +266,11 @@ class Uri implements UriInterface
      */
     public function withPath($path)
     {
+        $copy = clone $this;
         // FIXME: throw exception for invalid path
         // QUESTION: how to determine if path is invalid
-        $this->uriParts['path'] = $path;
-        return $this;
+        $copy->uriParts['path'] = $path;
+        return $copy;
     }
 
     /**
@@ -287,16 +290,17 @@ class Uri implements UriInterface
      */
     public function withQuery($query)
     {
+        $copy = clone $this;
         if (empty($query)) {
-            unset($this->uriParts['query']);
-            return $this;
+            unset($copy->uriParts['query']);
+            return $copy;
         }
         // FIXME: throw exceptions for invalid query strings
         // QUESTION: how to determine invalid query strings
-        $this->uriParts['query'] = $query;
+        $copy->uriParts['query'] = $query;
         //reset the query params array
         $this->getQueryParams(true);
-        return $this;
+        return $copy;
     }
 
     /**
@@ -315,12 +319,13 @@ class Uri implements UriInterface
      */
     public function withFragment($fragment)
     {
+        $copy = clone $this;
         if (empty($fragment)) {
-            unset($this->uriParts['fragment']);
-            return $this;
+            unset($copy->uriParts['fragment']);
+            return $copy;
         }
         // QUESTION: how to determine if fragment is encoded
-        $this->uriParts['fragment'] = $fragment;
+        $copy->uriParts['fragment'] = $fragment;
     }
 
     /**
@@ -348,11 +353,11 @@ class Uri implements UriInterface
      */
     public function __toString()
     {
-        $uri = ($this->getScheme()) ? $this->getScheme() . ':' : '';
-        if ($this->getAuthority()) {
-            $uri .= '//' . $this->getAuthority();
+        $uri = ($this->getScheme()) ? $this->getScheme() . '://' : '';
+        if (!empty($this->getAuthority())) {
+            $uri .= $this->getAuthority();
         } else {
-            $uri .= ($this->getHost()) ? '//' . $this->getHost() : '';
+            $uri .= ($this->getHost()) ?  $this->getHost() : '';
             $uri .= ($this->getPort()) ? ':' . $this->getPort() : '';
         }
 
