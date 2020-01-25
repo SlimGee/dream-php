@@ -2,6 +2,7 @@
 namespace Dream\Http;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  *
@@ -101,7 +102,7 @@ class Response extends Message implements ResponseInterface
      */
     public function send()
     {
-        foreach ($message->getHeaders() as $name => $values) {
+        foreach ($this->getHeaders() as $name => $values) {
            foreach ($values as $value) {
                header(sprintf('%s: %s', $name, $value), false);
            }
