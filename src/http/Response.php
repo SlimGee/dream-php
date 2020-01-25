@@ -1,5 +1,5 @@
 <?php
-namespace Dream\Htpp;
+namespace Dream\Http;
 
 use Psr\Http\Message\ResponseInterface;
 
