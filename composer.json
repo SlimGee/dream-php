@@ -1,5 +1,5 @@
 {
-	"name" : "slimgee/dreaPHP",
+	"name" : "slimgee/dream-php",
 	"description":"Psr7 compliant mvc framework",
     "require": {
         "psr/http-message": "^1.0",
