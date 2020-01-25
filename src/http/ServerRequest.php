@@ -54,6 +54,13 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     protected $uploadedFiles;
 
+    public function __construct($uri = null, $method = null,$serverParams = null)
+    {
+        $this->uriObj = $uri;
+        $this->method = $this->checkMethod($method);
+        $this->serverParams = $serverParams;
+    }
+
     /**
      * Retrieve server parameters.
      *
@@ -66,7 +73,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     public function getServerParams()
     {
         if (!$this->serverParams) {
-            $this->serverParams = $_SERVER;
+            return [];
         }
         return $this->serverParams;
     }
@@ -410,6 +417,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         $this->getRequestMethod();
         $this->getContentType();
         $this->getParsedBody();
+        $this->getHeaders();
         return $this;
     }
 }
