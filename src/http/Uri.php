@@ -9,10 +9,24 @@ use Psr\Http\Message\UriInterface;
  */
 class Uri implements UriInterface
 {
+    use Concern\UriFilter;
+
+    /**
+     * The raw uri string
+     * @var string
+     */
     protected $uriString;
 
+    /**
+     * Parsed uri parts from parse_url
+     * @var array
+     */
     protected $uriParts = [];
 
+    /**
+     * Name value pairs of query parameters
+     * @var array
+     */
     protected $queryParams;
 
     /**
@@ -218,6 +232,9 @@ class Uri implements UriInterface
             unset($copy->uriParts['host']);
             return $copy;
         }
+        if (!filter_var($host,FILTER_VALIDATE_DOMAIN,FILTER_FLAG_HOSTNAME)) {
+            throw new InvalidArgumentException(Constants::ERROR_BAD . 'hostname');
+        }
         $copy->uriParts['host'] = $host;
         return $copy;
     }
@@ -237,7 +254,7 @@ class Uri implements UriInterface
             unset($copy->uriParts['port']);
             return $copy;
         }
-        // FIXME: throw exception for ports outside range of established TCP and UDP port ranges
+        $port = $this->filterPort($port);
         $copy->uriParts['port'] = $port;
         return $copy;
     }
@@ -267,8 +284,7 @@ class Uri implements UriInterface
     public function withPath($path)
     {
         $copy = clone $this;
-        // FIXME: throw exception for invalid path
-        // QUESTION: how to determine if path is invalid
+        $path = $this->filterPath();
         $copy->uriParts['path'] = $path;
         return $copy;
     }
@@ -295,8 +311,7 @@ class Uri implements UriInterface
             unset($copy->uriParts['query']);
             return $copy;
         }
-        // FIXME: throw exceptions for invalid query strings
-        // QUESTION: how to determine invalid query strings
+        $query = $this->filterQueryAndFragment($query);
         $copy->uriParts['query'] = $query;
         //reset the query params array
         $this->getQueryParams(true);
@@ -324,7 +339,7 @@ class Uri implements UriInterface
             unset($copy->uriParts['fragment']);
             return $copy;
         }
-        // QUESTION: how to determine if fragment is encoded
+        $fragment = $this->filterQueryAndFragment($fragment);
         $copy->uriParts['fragment'] = $fragment;
     }
 

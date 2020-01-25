@@ -9,20 +9,49 @@ use Psr\Http\Message\UploadedFileInterface;
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
+    /**
+     * $_SERVER superglobal abstraction
+     * @var array
+     */
     protected $serverParams;
 
+    /**
+     * Wrapps all http cookies
+     * @var array
+     */
     protected $cookies;
 
+    /**
+     * Name value pairs of query parameters
+     * @var array
+     */
     protected $queryParams;
 
+    /**
+     * Current contentType
+     * @var string
+     */
     protected $contentType;
 
+    /**
+     * Parsed body of request
+     * @var mixed
+     */
     protected $parsedBody;
 
+    /**
+     * @var array\mixed
+     */
     protected $attributes;
 
+    /**
+     * @var array
+     */
     protected $uploadedFileInfo;
 
+    /**
+     * @var UploadedFileInterface[]
+     */
     protected $uploadedFiles;
 
     /**
