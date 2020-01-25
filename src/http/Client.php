@@ -32,7 +32,8 @@ class Client implements ClientInterface
              'http' => [
                  'method' => strtoupper($request->getMethod()),
                  'header' => $headers,
-                 'content' => $request->getBody()->getContents()
+                 'content' => $request->getBody()->getContents(),
+                 'ignore_errors' => 1
              ]
          ];
 
@@ -42,6 +43,17 @@ class Client implements ClientInterface
              $error = error_get_last();
              throw new \Exception("Error Processing Request: " . $error, 1);
          }
-         return (new Response())->withBody(new TextStream($result));
+         $code = $this->getHttpCode($http_response_header);
+         return (new Response())->withBody(new TextStream($result))->withStatus($code);
+    }
+
+    protected function getHttpCode($headers)
+    {
+        if (is_array($headers)) {
+            $parts = explode(' ',$headers[0]);
+            if(count($parts) > 1)
+                return $parts[1];
+        }
+        return false;
     }
 }
