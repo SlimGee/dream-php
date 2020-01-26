@@ -25,6 +25,7 @@ class Response extends Message implements ResponseInterface
         },$headers);
         $this->version = $this->onlyVersion($version);
         if ($statusCode) $this->setStatusCode();
+        $this->setStatusCode();
     }
     /**
      * Gets the response status code.
