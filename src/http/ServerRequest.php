@@ -163,10 +163,12 @@ class ServerRequest extends Request implements ServerRequestInterface
         if (empty($queryStr)) {
             return $ret;
         }
-        array_walk(function ($str){
-            list($name,$value) = explode('=',$str);
+
+        foreach (explode('&',$queryStr) as $pair) {
+            list($name,$value) = explode('=',$pair);
             $ret[$name] = $value;
-        },explode('&',$queryStr));
+        }
+
         return $ret;
     }
 
