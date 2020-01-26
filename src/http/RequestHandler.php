@@ -8,7 +8,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
 /**
- *
+ * Queue based request handler
  */
 class RequestHandler implements RequestHandlerInterface
 {
