@@ -18,7 +18,7 @@ require_once 'vendor/autoload.php';
 |----------------------------------------------------------------------------
 | This is our request handler
 */
-$kernel = require_once 'bootstrap/app.php';
+$handler = require_once 'bootstrap/app.php';
 
 
 /*---------------------------------------------------------------------------
@@ -26,7 +26,7 @@ $kernel = require_once 'bootstrap/app.php';
 |----------------------------------------------------------------------------
 | This is the response
 */
-$response = $kernel->handle(
+$response = $handler->handle(
     Dream\Http\Factory\Kernel::fromGlobals()
 );
 
