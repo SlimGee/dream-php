@@ -19,25 +19,25 @@ class Router
      * post routes
      * @var Dream\Route\Route[]
      */
-    private $post;
+    public static $post;
 
     /**
      * put routes
      * @var Dream\Route\Route[]
      */
-    private $put;
+    public static $put;
 
     /**
      * delete routes
      * @var Dream\Route\Route[]
      */
-    private $delete;
+    public static $delete;
 
     /**
      * patch
      * @var Dream\Route\Route[]
      */
-    private $patch;
+    public static $patch;
 
     /**
      * current route
@@ -97,6 +97,11 @@ class Router
         return self::${strtolower($method)};
     }
 
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
     /**
      * Normalise a path for regex
      * @param string $string the path
@@ -104,7 +109,7 @@ class Router
      */
     private function normalize($string)
     {
-        $parts = explode('/',$uri);
+        $parts = explode('/',$string);
         $ret = [];
 
         foreach ($parts as $key => $value){

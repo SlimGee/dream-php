@@ -1,27 +1,38 @@
 <?php
+/*---------------------------------------------------------------------------
+|   The starting point
+|----------------------------------------------------------------------------
+| A base path
+*/
+defined('ROOT') || define('ROOT', __DIR__);
+
+/*---------------------------------------------------------------------------
+|   Lets register The autoloader
+|----------------------------------------------------------------------------
+| It will be a nightmare if you don't
+*/
 require_once 'vendor/autoload.php';
 
-use Dream\Http\Uri;
-use Dream\Http\UploadedFile;
-use Dream\Http\Stream;
-use Dream\Http\TextStream;
-use Dream\Http\Constants;
-use Dream\Http\Message;
-use Dream\Http\ServerRequest;
-use Dream\Http\Request;
-
-$request = new ServerRequest();
-$request->initialize();
-$request->getHeaders();
-$request->getProtocolVersion();
-$uri = new Uri();
-$uri = $uri->withHost($request->getHeaderLine('host')[0])
-            ->withPort((int)$request->getServerParams()['SERVER_PORT'])
-            ->withPath($request->getServerParams()['PATH_INFO'] ?? '')
-            ->withQuery($request->getServerParams()['QUERY_STRING'] ?? '');
-$request = $request->withUri($uri,true);
+/*---------------------------------------------------------------------------
+|   Lets enjoy some dreams
+|----------------------------------------------------------------------------
+| This is our request handler
+*/
+$kernel = require_once 'bootstrap/app.php';
 
 
-echo '<pre>';
-var_dump($request);
-echo '</pre>';
+/*---------------------------------------------------------------------------
+|   Lets Compose A Dream Application
+|----------------------------------------------------------------------------
+| This is the response
+*/
+$response = $kernel->handle(
+    Dream\Http\Factory\Kernel::fromGlobals()
+);
+
+/*---------------------------------------------------------------------------
+|   Mission Accomplished
+|----------------------------------------------------------------------------
+| You must have woken by now lets send the response
+*/
+$response->send();

@@ -22,7 +22,7 @@ class Kernel
     {
         $uri = new Uri(self::figureUriString());
         $method = $_SERVER['REQUEST_METHOD'];
-        return ServerFactory::createServerRequest($method, $uri, $_SERVER);
+        return (new ServerFactory)->createServerRequest($method, $uri, $_SERVER);
     }
 
     public static function figureUriString()
