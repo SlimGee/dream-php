@@ -1,5 +1,5 @@
 <?php
-use Dream\Http\Routes\Route;
+use Dream\Route\Route;
 
 
 Route::get('/')->to('home#index')->name('root');

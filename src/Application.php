@@ -117,4 +117,9 @@ class Application extends Container
       {
           return $this->basePath;
       }
+
+      public function config()
+      {
+          return Registry::get('config');
+      }
 }
