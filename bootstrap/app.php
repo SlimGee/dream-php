@@ -7,6 +7,13 @@
 defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
 /*---------------------------------------------------------------------------
+|   Even when dreaming you need to know where you're going don't you
+|----------------------------------------------------------------------------
+| Lets get some routes
+*/
+require_once 'config/routes.php';
+
+/*---------------------------------------------------------------------------
 |   We have something common here
 |----------------------------------------------------------------------------
 | Some common useful functions
@@ -20,12 +27,6 @@ require_once 'src/Common.php';
 */
 require_once 'config/constants.php';
 
-/*---------------------------------------------------------------------------
-|   Even when dreaming you need to know where you're going don't you
-|----------------------------------------------------------------------------
-| Lets get some routes
-*/
-require_once 'config/routes.php';
 
 /*---------------------------------------------------------------------------
 |   Trust us you need these
