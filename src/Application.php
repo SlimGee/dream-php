@@ -13,93 +13,108 @@ use Dream\Container\Container;
 
 class Application extends Container
 {
-  /**
-   * @var application router
-   */
-  public $router;
+    /**
+     * Dream version
+     */
+    private $version = "0.0.1";
 
-  /**
-   * class constructor
-   */
-  public function __construct()
-  {
-    $this->set_reporting();
-    $this->unregister_globals();
-  }
+    private $basePath;
+    /**
+     * @var application router
+     */
+    public $router;
 
-  /**
-   * set error reporting
-   * @return void
-   */
-  private function set_reporting(){
-    if(DEBUG){
-      error_reporting(E_ALL);
-      ini_set('display_errors',1);
-      return;
+    /**
+     * class constructor
+     */
+    public function __construct()
+    {
+        $this->set_reporting();
+        $this->unregister_globals();
+        $this->basePath = ROOT;
     }
-    error_reporting(0);
-    ini_set('display_errors',0);
-    ini_set('log_errors',1);
-    ini_set('error_log',ROOT.DS.'tmp'.DS.'logs'.DS.'errors.log');
-  }
 
-  /**
-   * unregister globas
-   * @return void;
-   */
-   private function unregister_globals(){
-     if(ini_get('register_globals')){
-       $globalsArray = ['_POST','_GET','_SERVER','_FILES','_REQUEST','_COOKIE','_ENV'];
-       foreach($globalsArray as $g){
-         foreach($GLOBALS[$g] as $k=>$v){
-           if($GLOBALS[$k]===$v){
-             unset($GLOBALS[$K]);
-           }
+    /**
+     * set error reporting
+     * @return void
+     */
+    private function set_reporting()
+    {
+         if(DEBUG){
+             error_reporting(E_ALL);
+             ini_set('display_errors',1);
+             return;
          }
-       }
+         error_reporting(0);
+         ini_set('display_errors',0);
+         ini_set('log_errors',1);
+         ini_set('error_log',ROOT.DS.'tmp'.DS.'logs'.DS.'errors.log');
      }
-   }
 
-   /**
-    * start running the application
-    * bootstraping the application
-    * @return void;
-    */
-   public function start(){
-     //initialize session and register
-     Registry::set('session',Session::init());
+     /**
+      * unregister globas
+      * @return void;
+      */
+     private function unregister_globals()
+     {
+          if(ini_get('register_globals')){
+              $globalsArray = ['_POST','_GET','_SERVER','_FILES','_REQUEST','_COOKIE','_ENV'];
+              foreach($globalsArray as $g){
+                  foreach($GLOBALS[$g] as $k=>$v){
+                      if($GLOBALS[$k]===$v){
+                          unset($GLOBALS[$K]);
+                      }
+                  }
+              }
+          }
+      }
 
-     //initialize configuration
-     $config = new Config();
+      /**
+       * start running the application
+       * bootstraping the application
+       * @return void;
+       */
+      public function start()
+      {
+          //initialize session and register
+          Registry::set('session',Session::init());
 
-     //Register
-     Registry::set('config', $config);
+          //initialize configuration
+          $config = new Config();
 
-     //initialize database
-     //$db = new Database;
+          //Register
+          Registry::set('config', $config);
 
-     //connect database
-    // $connection = $db->new_connection(
-      // $config->db->host,
-       //$config->db->user,
-       //$config->db->password,
-       //$config->db->database
-     //);
+          //initialize database
+          //$db = new Database;
 
-     //set current connection
-    // $db->set_active_connection($connection);
+          //connect database
+          // $connection = $db->new_connection(
+          // $config->db->host,
+          //$config->db->user,
+          //$config->db->password,
+          //$config->db->database
+          //);
 
-     //Register
-     //Registry::set('db',$db);
+          //set current connection
+          // $db->set_active_connection($connection);
 
-     //flush
-     Registry::set('flush',new Flush());
+          //Register
+          //Registry::set('db',$db);
 
-     Registry::set('token',bin2hex(random_bytes(64)));
-   }
+          //flush
+          Registry::set('flush',new Flush());
 
-   public function assemble($class,$parts = [])
-   {
-       return (new \ReflectionClass($class))->newInstanceArgs($parts);
-   }
+          Registry::set('token',bin2hex(random_bytes(64)));
+      }
+
+      public function assemble($class,$parts = [])
+      {
+          return (new \ReflectionClass($class))->newInstanceArgs($parts);
+      }
+
+      public function basePath()
+      {
+          return $this->basePath;
+      }
 }
