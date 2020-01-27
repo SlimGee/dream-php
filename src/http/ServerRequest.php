@@ -354,7 +354,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getAttribute($name, $default = null)
     {
-        return $this->attribute[$name] ?? $default;
+        return $this->attributes[$name] ?? $default;
     }
 
     /**
