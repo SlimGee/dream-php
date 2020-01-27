@@ -228,7 +228,7 @@ if (!function_exists('get_class_meta')) {
     {
         $reflector = new \ReflectionMethod($class,$method);
         $parts = match($reflector->getDocComment(),'@[a-zA-Z]+\s*[a-zA-Z0-9, _]*');
-        
+
         if (!($parts)) {
             return;
         }
@@ -258,7 +258,7 @@ if (!function_exists('redirect_back')) {
 }
 
 
-foreach (\Dream\Http\Routes\Router::$getRoutes as $key => $value) {
+foreach (\Dream\Route\Router::$get as $key => $value) {
 
     $name = (isset($value->name)) ? $value->name : $name = $value->controller . '_' .$value->action;
     eval("
@@ -296,7 +296,7 @@ foreach (\Dream\Http\Routes\Router::$getRoutes as $key => $value) {
 }
 
 
-foreach (\Dream\Http\Routes\Router::$postRoutes as $key => $value) {
+foreach (\Dream\Route\Router::$post as $key => $value) {
     $name = (isset($value->name)) ? $value->name : $name = $value->controller . '_' .$value->action;
     eval("
     use Lead\\Components\\Variable;

@@ -32,7 +32,7 @@ class Dispatcher implements RequestHandlerInterface
         $controller = new $controller();
 
         \Dream\Registry::get('view_helper')->controller = $controller;
-
+        \Dream\Views\View::register_methods(\Dream\Registry::get('view_helper'));
         $controller->params = new \Dream\Http\Params([]);
         $controller->params['controller'] = $controller;
         $controller->params['action'] = $action;

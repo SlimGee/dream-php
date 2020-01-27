@@ -11,7 +11,8 @@
     "autoload": {
       "psr-4": {
         "Dream\\": "src/",
-				"Lead\\": "src/lead/"
+				"Lead\\": "src/lead/",
+				"App\\": "app/"
       }
     }
 }
