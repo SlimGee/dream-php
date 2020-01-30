@@ -99,8 +99,9 @@ function singular($string)
 
 function redirect_to($location)
 {
-    Registry::get('controller')->will_render = false;
+    Registry::get('controller')->willRrender = false;
     header('Location: ' . $location);
+    exit();
 }
 
 function notice($value)
@@ -246,7 +247,7 @@ if (!function_exists('get_class_meta')) {
 if (!function_exists('back_link')) {
     function back_link()
     {
-        return Session::get('back_link');
+        return Registry::get('back_link');
     }
 }
 

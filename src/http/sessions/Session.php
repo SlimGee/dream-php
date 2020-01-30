@@ -12,6 +12,7 @@ class Session
   private function __construct()
   {
       session_start();
+      session_regenerate_id();
   }
 
   public static function set($key,$value)
@@ -43,5 +44,10 @@ class Session
  public static function erase($key)
  {
      unset($_SESSION[$key]);
+ }
+
+ public static function has($key)
+ {
+     return isset($_SESSION[$key]);
  }
 }

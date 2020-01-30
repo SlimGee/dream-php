@@ -66,8 +66,9 @@ class Uri implements UriInterface
         if (!empty($this->getUserInfo())){
             $val .= $this->getUserInfo() . '@';
             $val .= $this->uriParts['host'] ?? '';
-            if (!empty($this->uriParts['port']) && !array_key_exists($this->getScheme(),Constants::STANDARD_PORTS))
-            $val .= ':' . $this->uriParts['port'];
+            if (isset($this->uriParts['port']) && !in_array($this->uriParts['port'],Constants::STANDARD_PORTS)){
+                $val .= ':' . $this->uriParts['port'];
+            }
         }
         return $val;
     }

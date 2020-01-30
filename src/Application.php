@@ -86,21 +86,21 @@ class Application extends Container
           Registry::set('config', $config);
 
           //initialize database
-          //$db = new Database;
+          $db = new Database;
 
           //connect database
-          // $connection = $db->new_connection(
-          // $config->db->host,
-          //$config->db->user,
-          //$config->db->password,
-          //$config->db->database
-          //);
+          $connection = $db->new_connection(
+              $config->db->host,
+              $config->db->user,
+              $config->db->password,
+              $config->db->database
+          );
 
           //set current connection
-          // $db->set_active_connection($connection);
+          $db->set_active_connection($connection);
 
           //Register
-          //Registry::set('db',$db);
+          Registry::set('db',$db);
 
           //flush
           Registry::set('flush',new Flush());

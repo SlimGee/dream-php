@@ -28,7 +28,7 @@ trait AuthenticatesUsers
         if ($user && password_verify($this->user_params()['password'],$user->password)){
             unset($user->password);
             Session::set('current_user',serialize($user));
-            $back = (Session::check('login_back_link')) ? Session::get('login_back_link') : $this->redirectTo;
+            $back = Session::get('login_back_link') ?? $this->redirectTo;
             Session::erase('login_back_link');
             notice("You have successfuly logged in.");
             return redirect_to($back);

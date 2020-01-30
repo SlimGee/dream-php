@@ -273,7 +273,7 @@ class ServerRequest extends Request implements ServerRequestInterface
             $this->parsedBody = $_POST;
         } elseif ($this->getContentType() == Constants::CONTENT_TYPE_JSON || $this->getContentType() == Constants::CONTENT_TYPE_HAL_JSON) {
             ini_set('allow_url_fopen',true);
-            $this->parsedBody = json_decode(file_get_contents('php://input'));
+            $this->parsedBody = json_decode(file_get_contents('php://input'),true);
         } elseif (!empty($_REQUEST)) {
             $this->parsedBody = $_REQUEST;
         } else {

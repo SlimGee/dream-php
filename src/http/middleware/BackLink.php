@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Dream\Http\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface;
+use Dream\Registry;
 use Dream\Http\Response;
 use Dream\Http\TextStream;
+use Dream\Http\Sessions\Session;
 
 /**
  *
  */
-class Example implements MiddlewareInterface
+class BackLink implements MiddlewareInterface
 {
     /**
      * Process an incoming server request.
@@ -23,11 +25,10 @@ class Example implements MiddlewareInterface
      */
     public function process(Request $request, Handler $handler): ResponseInterface
     {
+        $back = Session::has('back_link') ? Session::get('back_link') : $request->getUri()->__toString();
+        Registry::set('back_link',$back);
+        Session::set('back_link',$request->getUri()->__toString());
         $response = $handler->handle($request);
-        return $response->withStatus(200)
-                        ->withBody(new TextStream(json_encode([
-                            'user' => 'given'
-                        ])))
-                        ->withHeader('Content-Type','application/json');
+        return $response;
     }
 }

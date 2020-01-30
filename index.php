@@ -35,4 +35,6 @@ $response = $handler->handle(
 |----------------------------------------------------------------------------
 | You must have woken by now lets send the response
 */
-$response->send();
+//$response->send();
+
+Dream\Mail\Mailer::mail();

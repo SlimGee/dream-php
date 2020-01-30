@@ -3,21 +3,22 @@
 namespace Dream\Http\Controllers;
 
 use Dream\Registry;
+use Dream\Http\Response;
+use Dream\Http\TextStream;
 use Dream\Http\Sessions\Session;
 use Dream\Views\View;
+use Dream\Exceptions\UndefinedHookException;
 use Lead\Components\Variable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Dream\Http\Response;
-use Dream\Http\TextStream;
 
 
 /**
  * The base controller
  */
-class Controller implements RequestHandlerInterface
+class Controller
 {
     use \Dream\Http\Controllers\Concerns\Forgery;
     /**
@@ -46,9 +47,9 @@ class Controller implements RequestHandlerInterface
      *
      * May call other collaborating code to generate the response.
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function invokeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $action = $request->getAttribute('action');
+        $action = $request->getAttribute('route')->action;
         //controller hooks function
         // HACK: added this so that some actions can be done before others and after
         $hook = function ($at) use ($action){
@@ -59,8 +60,8 @@ class Controller implements RequestHandlerInterface
             }
             $meta = $meta[$at];
             foreach ($meta as $method) {
-                if (is_callable([$controller,$method])) {
-                    call_user_func([$controller,$method]);
+                if (is_callable([$this,$method])) {
+                    call_user_func([$this,$method]);
                 }
                 elseif(is_callable($method)) {
                     call_user_func($method);
@@ -71,11 +72,11 @@ class Controller implements RequestHandlerInterface
             }
         };
 
-        ob_start();
         $hook('@before');
         $this->$action();
         $hook('@after');
 
+        ob_start();
         return $this->invokeView($request);
     }
 
@@ -110,19 +111,5 @@ class Controller implements RequestHandlerInterface
         }
 
         return (new Response(400));
-    }
-
-    public function set_back_link()
-    {
-        Session::set('back_link',Registry::get('back_link'));
-        Registry::erase('back_link');
-    }
-
-    /**
-     * class destructor
-     */
-    public function __destruct()
-    {
-        //$this->set_back_link();
     }
 }
