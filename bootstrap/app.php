@@ -40,41 +40,7 @@ require_once 'app/helpers/functions.php';
 |----------------------------------------------------------------------------
 | Our application
 */
-$app = new Dream\Application;
-
-/*---------------------------------------------------------------------------
-|   The Power button
-|----------------------------------------------------------------------------
-| Lets press it
-*/
-$app->start();
-
-/*---------------------------------------------------------------------------
-|   Lets create a handler
-|----------------------------------------------------------------------------
-| This is our request handler
-*/
-$handler = $app->assemble(
-    Dream\Http\RequestHandler::class
-);
-
-/*---------------------------------------------------------------------------
-|   Lets create a router
-|----------------------------------------------------------------------------
-| This is will router our request
-*/
-$router = $app->assemble(
-    Dream\Route\Router::class,[new Dream\Route\Dispatcher]
-);
-
-/*---------------------------------------------------------------------------
-|   Routing Middleware
-|----------------------------------------------------------------------------
-| This is our request handler
-*/
-$handler->add(
-    $app->assemble(Dream\Http\Middleware\Routing::class,[$router])
-);
+$app = new Dream\Kernel\App(__DIR__);
 
 
 /*---------------------------------------------------------------------------
@@ -82,4 +48,4 @@ $handler->add(
 |----------------------------------------------------------------------------
 | Lets give them a handler
 */
-return $handler;
+return $app;
