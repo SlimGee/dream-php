@@ -13,12 +13,28 @@ defined('ROOT') || define('ROOT', __DIR__);
 */
 require_once 'vendor/autoload.php';
 
+$config = require_once 'config/config.php';
+
 /*---------------------------------------------------------------------------
 |   Lets enjoy some dreams
 |----------------------------------------------------------------------------
 | This is our request handler
 */
-$handler = require_once 'bootstrap/app.php';
+$app = require_once 'bootstrap/app.php';
+
+$app->boot($config);
+
+/*---------------------------------------------------------------------------
+|   Lets create a router
+|----------------------------------------------------------------------------
+| This is will router our request
+*/
+
+$app = $app->configure([
+    'substitute' => [
+        Psr\Http\Server\RequestHandlerInterface::class => Dream\Route\Dispatcher::class
+    ]
+]);
 
 
 /*---------------------------------------------------------------------------
@@ -26,6 +42,19 @@ $handler = require_once 'bootstrap/app.php';
 |----------------------------------------------------------------------------
 | This is the response
 */
+$handler = $app->get(
+    Dream\Http\RequestHandler::class
+);
+
+/*---------------------------------------------------------------------------
+|   Routing Middleware
+|----------------------------------------------------------------------------
+| This is our request handler
+*/
+$handler->add(
+    $app->get(Dream\Http\Middleware\Routing::class)
+);
+
 $response = $handler->handle(
     Dream\Http\Factory\Kernel::fromGlobals()
 );
@@ -35,6 +64,4 @@ $response = $handler->handle(
 |----------------------------------------------------------------------------
 | You must have woken by now lets send the response
 */
-//$response->send();
-
-Dream\Mail\Mailer::mail();
+$response->send();
