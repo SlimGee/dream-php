@@ -12,7 +12,8 @@
       "psr-4": {
         "Dream\\": "src/",
 				"Lead\\": "src/lead/",
-				"App\\": "app/"
+				"App\\": "app/",
+				"Config\\": "config"
       }
     }
 }
