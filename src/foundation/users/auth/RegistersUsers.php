@@ -1,7 +1,7 @@
 <?php
 namespace Dream\Foundation\Users\Auth;
 use Dream\Validator;
-use Dream\Http\Sessions\Session;
+use Dream\Session\Session;
 /**
  *
  */

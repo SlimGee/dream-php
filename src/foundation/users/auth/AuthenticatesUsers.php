@@ -1,6 +1,6 @@
 <?php
 namespace Dream\Foundation\Users\Auth;
-use Dream\Http\Sessions\Session;
+use Dream\Session\Session;
 use App\Models\User;
 /**
  *
