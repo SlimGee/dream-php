@@ -7,7 +7,7 @@
     <meta name="keywords" content="renting,house,accomodation,zimbabwe,rented accomodation,rented house,rent,harare">
     <meta name="description" content="The fastes way to find rented accomodation in Zimbabwe">
     <meta name="application-name" content="sKotch">
-    
+
     <title>{= title}</title>
 
     { style_tag 'application' }
@@ -15,8 +15,6 @@
 
   </head>
   <body>
-    { partial 'shared/header' }
     { yield }
-    { partial 'shared/footer' }
   </body>
 </html>
