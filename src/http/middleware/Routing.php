@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface;
 use Dream\Http\Response;
 use Dream\Http\TextStream;
-
+use Dream\Route\Router;
 /**
  *
  */
@@ -16,7 +16,7 @@ class Routing implements MiddlewareInterface
 {
     private $router;
 
-    public function __construct($router)
+    public function __construct(Router $router)
     {
         $this->router = $router;
     }
