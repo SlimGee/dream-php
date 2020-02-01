@@ -19,18 +19,13 @@ class Dispatcher implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $request->getAttribute('route');
-
         app()->registry()->set('action_view',$route->controller . '/' . $route->action);
-
         app()->registry()->set(
             'view_helper',
             \Dream\Patterns\Factory\HelperFactory::load($route->controller)
         );
         $controller = '\App\Http\Controllers\\' . ucfirst($route->controller);
-
-
         $controller = new $controller();
-
         app()->registry()->get('view_helper')->controller = $controller;
         \Dream\Views\View::register_methods(
             app()->registry()->get('view_helper')
@@ -41,7 +36,6 @@ class Dispatcher implements RequestHandlerInterface
         $controller->params['action'] = $route->action;
         $controller->flush = app()->registry()->get('flush');
         app()->registry()->set('controller',$controller);
-
         return $controller->invokeAction($request);
     }
 
