@@ -2,7 +2,7 @@
 /**
  * This is the configuration file
  */
-$config = [
+return [
   //database configuration
   'db' => [
     'user'     => 'root',
