@@ -1,10 +1,8 @@
 <?php
-namespace App\Environments;
 
-/**
- *
- */
+namespace Config\Environments;
+
 class Environment
 {
-  const ENVI = 'development';
+    const ENV = 'development';
 }
