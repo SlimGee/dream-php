@@ -3,7 +3,6 @@ use Lead\Parser;
 use Lead\Lexer;
 use Lead\Stream;
 use Lead\Components\Variable;
-use Dream\Registry;
 
 include 'view_helper_helpers.php';
 
@@ -32,7 +31,7 @@ $partial->setValue(function ($partial){
 
 $yield = new Variable('yield');
 $yield->setValue(function (){
-    $view = load_file(Dream\Registry::get('action_view'));
+    $view = load_file(app()->registry()->get('action_view'));
     $parser = new Parser(
         new Lexer(
             new Stream($view)
@@ -192,7 +191,7 @@ $form_for->setValue(function ($model,$action,$block_var,$attributes = NULL){
             $attr_str .= $key . "='" . $value->evaluate() . "' ";
         }
     }
-    $token = sha1(Registry::get('token'));
+    $token = sha1(app()->registry()->get('token'));
     Dream\Http\Sessions\Session::set('authenticity_token',$token);
     $form = "<form action = '{$action}' {$attr_str}>";
     $form .= "<input type='hidden' name='authenticity_token' value='{$token}'>";
