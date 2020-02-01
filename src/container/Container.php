@@ -148,6 +148,14 @@ class Container implements ContainerInterface
      */
     public function resolveInterface(\ReflectionClass $reflector)
     {
+        if (isset($this->rules['substitute'][$reflector->getName()])) {
+            return $this->get(
+                $this->rules['substitute'][
+                    $reflector->getName()
+                ]
+            );
+        }
+    
         $classes = get_declared_classes();
         foreach ($classes as $class) {
             $rf = new \ReflectionClass($class);

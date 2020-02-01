@@ -1,5 +1,5 @@
 {
-    "name": "dream/container",
+    "name": "dream-php/container",
     "description": "The container package of Dream framework",
     "type": "package",
     "license": "MIT",
