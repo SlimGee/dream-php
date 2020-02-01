@@ -192,7 +192,7 @@ $form_for->setValue(function ($model,$action,$block_var,$attributes = NULL){
         }
     }
     $token = sha1(app()->registry()->get('token'));
-    Dream\Http\Sessions\Session::set('authenticity_token',$token);
+    Dream\Session\Session::set('authenticity_token',$token);
     $form = "<form action = '{$action}' {$attr_str}>";
     $form .= "<input type='hidden' name='authenticity_token' value='{$token}'>";
     echo $form;

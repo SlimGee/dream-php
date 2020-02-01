@@ -2,6 +2,8 @@
 
 namespace Dream\Flush;
 
+use Dream\Session\Session;
+
 /**
  *
  */
