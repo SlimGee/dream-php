@@ -181,7 +181,10 @@ class App extends Container
     {
         return $this->registry;
     }
-
+    /**
+     * get the appliation's instance
+     * @return Dream\Kernel\App The appliation
+     */
     public static function instance()
     {
         if (!isset(self::$instance)) {
