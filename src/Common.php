@@ -346,3 +346,8 @@ function render_view($name)
         $expression->evaluate();
     }
 }
+
+function app()
+{
+    return Dream\Kernel\App::instance();
+}
