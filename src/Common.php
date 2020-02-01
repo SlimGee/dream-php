@@ -99,19 +99,19 @@ function singular($string)
 
 function redirect_to($location)
 {
-    Registry::get('controller')->willRrender = false;
+    app()->registry()->get('controller')->willRrender = false;
     header('Location: ' . $location);
     exit();
 }
 
 function notice($value)
 {
-    Registry::get('flush')->set_notice($value);
+    app()->registry()->get('flush')->set_notice($value);
 }
 
 function alert($value)
 {
-    Registry::get('flush')->set_alert($value);
+    app()->registry()->get('flush')->set_alert($value);
 }
 
 function _dlog($log)
@@ -123,9 +123,9 @@ function _dlog($log)
 function _flush($value='')
 {
     if (strlen($value) < 1) {
-        return Registry::get('flush');
+        return app()->registry()->get('flush');
     }
-    return Registry::get('flush')[$value];
+    return app()->registry()->get('flush')[$value];
 }
 
 function dnd($value)
@@ -247,7 +247,7 @@ if (!function_exists('get_class_meta')) {
 if (!function_exists('back_link')) {
     function back_link()
     {
-        return Registry::get('back_link');
+        return app()->registry()->get('back_link');
     }
 }
 
@@ -335,8 +335,8 @@ foreach (\Dream\Route\Router::$post as $key => $value) {
 
 function render_view($name)
 {
-    Registry::get('controller')->will_render = false;
-    Registry::get('controller')->set_view_vars();
+    app()->registry()->get('controller')->will_render = false;
+    app()->registry()->get('controller')->set_view_vars();
     $parser = new Parser(
         new Lexer(
             new Stream(load_file($name))
