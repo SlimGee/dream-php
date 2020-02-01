@@ -20,9 +20,9 @@ class Dispatcher implements RequestHandlerInterface
     {
         $route = $request->getAttribute('route');
 
-        \Dream\Registry::set('action_view',$route->controller . '/' . $route->action);
+        app()->registry()->set('action_view',$route->controller . '/' . $route->action);
 
-        \Dream\Registry::set(
+        app()->registry()->set(
             'view_helper',
             \Dream\Patterns\Factory\HelperFactory::load($route->controller)
         );
@@ -31,16 +31,16 @@ class Dispatcher implements RequestHandlerInterface
 
         $controller = new $controller();
 
-        \Dream\Registry::get('view_helper')->controller = $controller;
+        app()->registry()->get('view_helper')->controller = $controller;
         \Dream\Views\View::register_methods(
-            \Dream\Registry::get('view_helper')
+            app()->registry()->get('view_helper')
         );
         $params = array_merge($this->getParams($request), $route->params);
         $controller->params = new \Dream\Http\Params($params);
         $controller->params['controller'] = $route->controller;
         $controller->params['action'] = $route->action;
-        $controller->flush = \Dream\Registry::get('flush');
-        \Dream\Registry::set('controller',$controller);
+        $controller->flush = app()->registry()->get('flush');
+        app()->registry()->set('controller',$controller);
 
         return $controller->invokeAction($request);
     }
