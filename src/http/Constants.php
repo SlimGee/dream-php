@@ -23,7 +23,7 @@ class Constants
     const CONTENT_TYPE_JSON         = 'application/json';
     const CONTENT_TYPE_HAL_JSON     = 'application/hal+json';
     const DEFAULT_STATUS_CODE       = 200;
-    const DEFAULT_BODY_STREAM       = 'php://input';
+    const DEFAULT_BODY_STREAM       = 'php://temp';
     const DEFAULT_REQUEST_TARGET    = '/';
     const MODE_READ                 = 'r';
     const MODE_WRITE                = 'w';
