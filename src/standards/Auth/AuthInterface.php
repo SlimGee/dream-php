@@ -19,4 +19,14 @@ interface AuthInterface
      * @param Dream\Auth\AuthServiceInterface;
      */
     public function use(AuthServiceInterface $service);
+
+    /**
+     * Whether user is logged
+     */
+    public function hasIdentity();
+
+    /**
+     * Returns the currently authenticated user
+     */
+    public static function user();
 }
