@@ -9,8 +9,8 @@ class ApplicationHelper extends Helper
     public function title()
     {
         if (isset($this->controller->message)) {
-            return "ZimStay - {$this->controller->message}";
+            return "";
         }
-        return "ZimStay - Find Rented Accomodation in Zimbabwe";
+        return "The Dream Framework";
     }
 }
