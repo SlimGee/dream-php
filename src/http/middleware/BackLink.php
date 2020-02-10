@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Dream\Registry;
 use Dream\Http\Response;
 use Dream\Http\TextStream;
-use Dream\Http\Sessions\Session;
+use Dream\Session\Session;
 
 /**
  *
@@ -26,7 +26,7 @@ class BackLink implements MiddlewareInterface
     public function process(Request $request, Handler $handler): ResponseInterface
     {
         $back = Session::has('back_link') ? Session::get('back_link') : $request->getUri()->__toString();
-        Registry::set('back_link',$back);
+        app()->registry()->set('back_link',$back);
         Session::set('back_link',$request->getUri()->__toString());
         $response = $handler->handle($request);
         return $response;

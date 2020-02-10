@@ -5,5 +5,6 @@
 */
 use Dream\Route\Route;
 
+Dream\Auth\Auth::routes();
 
-Route::get('/')->to('home#index')->name('root');
+Route::get('/', 'home#index')->name('root');

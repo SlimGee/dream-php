@@ -1,6 +1,6 @@
 <?php
 
-namespace Dream\Auth;
+namespace Dream\Standards\Auth;
 
 /**
  *
@@ -16,7 +16,7 @@ interface AuthInterface
 
     /**
      * registers an auth service
-     * @param Dream\Auth\AuthServiceInterface;
+     * @param Dream\Standards\Auth\AuthServiceInterface;
      */
     public function use(AuthServiceInterface $service);
 
@@ -28,5 +28,10 @@ interface AuthInterface
     /**
      * Returns the currently authenticated user
      */
-    public static function user();
+    public function user();
+
+    /**
+     * Logges the user out by deleting the session
+     */
+    public function logout();
 }

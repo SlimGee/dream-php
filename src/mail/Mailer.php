@@ -26,7 +26,7 @@ class Mailer
             $mail->SMTPAuth   = true;                                     // Enable SMTP authentication
             $mail->Username   = $_ENV['SMTP_USER'];                     // SMTP username
             $mail->Password   = $_ENV['SMTP_PASS'];                               // SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; PHPMailer::ENCRYPTION_SMTPS
+
             PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = $_ENV['SMTP_PORT'];                                    // TCP port to connect to
 
@@ -44,7 +44,7 @@ class Mailer
             $mail->send();
             return true;
         } catch (Exception $e) {
-            self::mail('givenyslim12@gmail.com', 'Admin', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            self::mail('Admin', 'givenyslim12@gmail.com', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             return false;
         }
     }

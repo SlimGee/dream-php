@@ -62,7 +62,7 @@ class Model
    */
   public static function db()
   {
-    return Registry::get('db');
+    return app()->registry()->get('db');
   }
 
   /**

@@ -16,7 +16,7 @@ class Cookie
         return $_COOKIE[$key];
     }
 
-    public static function check($key)
+    public static function has($key)
     {
         return isset($_COOKIE[$key]);
     }

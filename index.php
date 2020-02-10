@@ -51,9 +51,14 @@ $handler = $app->get(
 |----------------------------------------------------------------------------
 | This is our request handler
 */
+
+$handler->add(
+    $app->get(Dream\Http\Middleware\BackLink::class)
+);
 $handler->add(
     $app->get(Dream\Http\Middleware\Routing::class)
 );
+
 
 $response = $handler->handle(
     Dream\Http\Factory\Kernel::fromGlobals()

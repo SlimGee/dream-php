@@ -40,10 +40,10 @@ class Route{
      * @param array route options
      * @return void;
      */
-    public static function get(string $path)
+    public static function get(string $path, $ca)
     {
         Router::$get[$path] = new static([]);
-        return Router::$get[$path];
+        return Router::$get[$path]->to($ca);
     }
 
     public function to($ca)
@@ -65,10 +65,10 @@ class Route{
      * @param array route options
      * @return void;
      */
-     public static function post(string $path)
+     public static function post(string $path, $ca)
      {
          Router::$post[$path] = new static([]);
-         return Router::$post[$path];
+         return Router::$post[$path]->to($ca);
      }
 
 
@@ -78,10 +78,10 @@ class Route{
       * @param array route options
       * @return void;
       */
-      public static function put(string $path)
+      public static function put(string $path, $ca)
       {
           Router::$put[$path] = new static([]);
-          return Router::$put[$path];
+          return Router::$put[$path]->to($ca);
       }
 
 
@@ -91,9 +91,9 @@ class Route{
        * @param array route options
        * @return void;
        */
-       public static function delete(string $path)
+       public static function delete(string $path, $ca)
        {
            Router::$delete[$path] = new static([]);
-           return Router::$delete[$path];
+           return Router::$delete[$path]->to($ca);
        }
 }

@@ -1,6 +1,6 @@
 <?php
 use Dream\Registry;
-use Dream\Http\Sessions\Session;
+use Dream\Session\Session;
 use Lead\Components\Variable;
 use Lead\{
     Lexer,
@@ -208,6 +208,33 @@ if (!function_exists('get_fallback_vals')) {
             return;
         }
         return Session::get('fallback_vals')[$name];
+    }
+}
+
+if (!function_exists('validation_errors')) {
+    function validation_errors()
+    {
+        foreach (app()->validator()->getErrors() as $error) {
+            alert($error);
+        }
+    }
+}
+
+if (!function_exists('auth')) {
+    function auth()
+    {
+        if (!app()->registry()->has('auth')) {
+            app()->configure([
+                Dream\Auth\Auth::class => [
+                    'config' => require_once 'config/auth.php'
+                ]
+            ]);
+
+            app()->registry()->set('auth',
+                app()->get(Dream\Auth\Auth::class)
+            );
+        }
+        return app()->registry()->get('auth');
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 namespace Dream\Http\Controllers\Concerns;
-use Dream\Http\Sessions\Session;
+use Dream\Session\Session;
 /**
  *
  */

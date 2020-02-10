@@ -131,6 +131,12 @@ class App extends Container
             )
         );
 
+        //initialize session and register
+        $this->registry->set('cookie',$this->get(
+            \Dream\Session\Cookie::class
+            )
+        );
+
         //Register Application configuration
         $this->configure([
             \Dream\Kernel\Config::class => [
@@ -170,7 +176,7 @@ class App extends Container
             )
         );
 
-        $this->registry->set('token',bin2hex(openssl_random_pseudo_bytes(64)));
+        $this->registry->set('token',bin2hex(openssl_random_pseudo_bytes(128)));
     }
 
     /**
@@ -188,7 +194,7 @@ class App extends Container
     public static function instance()
     {
         if (!isset(self::$instance)) {
-            self::__construct();
+            self::$instance = (new static);
         }
         return self::$instance;
     }
