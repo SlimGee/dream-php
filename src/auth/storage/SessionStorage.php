@@ -32,4 +32,9 @@ class SessionStorage implements StorageInterface
     {
         return app()->registry()->get('session')::get($key);
     }
+
+    public function erase($key)
+    {
+        return app()->registry()->get('session')::erase($key);
+    }
 }

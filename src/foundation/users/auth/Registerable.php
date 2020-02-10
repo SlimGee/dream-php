@@ -1,5 +1,7 @@
 <?php
+
 namespace Dream\Foundation\Users\Auth;
+
 use Dream\Validator;
 use Dream\Session\Session;
 /**
@@ -17,7 +19,7 @@ trait Registerable
             validation_errors();
             return redirect_back();
         }
-        $user = $this->create($this->user_params);
+        $user = $this->create($this->user_params());
         if ($user) {
             auth()->login($user);
         }

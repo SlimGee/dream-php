@@ -6,9 +6,9 @@ namespace Dream\Session;
  */
 class Cookie
 {
-    public static function set($key,$value)
+    public static function set($key, $value, $exp)
     {
-        $_SESSION[$key] = $value;
+        setcookie($key, $value, time() + $exp);
     }
 
     public static function get($key)
@@ -19,5 +19,10 @@ class Cookie
     public static function has($key)
     {
         return isset($_COOKIE[$key]);
+    }
+
+    public static function erase($key)
+    {
+        return setcookie( $key, "", time()- 60, "/","", 0);
     }
 }

@@ -15,6 +15,11 @@
 
   </head>
   <body>
+      {if flush.alert_any}
+        {each flush.alert as notic}
+            {= notic}
+        {end}
+      {end}
     { yield }
   </body>
 </html>
