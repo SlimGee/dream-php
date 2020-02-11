@@ -73,19 +73,17 @@ use PDOStatement;
      */
      public function new_connection($host, $user, $pass, $dbname)
      {
-          try
-          {
-            $this->connections[] = new PDO("mysql:host={$host};dbname={$dbname}",$user,$pass);
-            $this->connections[count($this->connections) - 1]->setAttribute(
-              PDO::ATTR_ERRMODE,
-              PDO::ERRMODE_EXCEPTION
-            );
-            return count($this->connections) - 1;
-          }
-          catch(PDOException $e)
-          {
-            trigger_error('Error connecting: ' . $e->getMessage(), E_USER_ERROR);
-          }
+          try{
+              $this->connections[] = new PDO("mysql:host={$host};dbname={$dbname}",$user,$pass);
+              $this->connections[count($this->connections) - 1]->setAttribute(
+                  PDO::ATTR_ERRMODE,
+                  PDO::ERRMODE_EXCEPTION
+              );
+              return count($this->connections) - 1;
+            }
+            catch(PDOException $e){
+                trigger_error('Error connecting: ' . $e->getMessage(), E_USER_ERROR);
+            }
      }
 
      /**
@@ -94,7 +92,7 @@ use PDOStatement;
       */
      public function last()
      {
-       return $this->last;
+         return $this->last;
      }
 
      /**
@@ -115,7 +113,6 @@ use PDOStatement;
      public function set_active_connection(int $new)
      {
          $this->active_connection = $new;
-
      }
 
      /**
@@ -126,13 +123,12 @@ use PDOStatement;
      public function cache_query( $query_str )
      {
          $query = $this->connections[$this->active_connection]->prepare($query_str);
-         if( !$query->execute() )
-         {
+         if( !$query->execute() ){
              trigger_error('Error executing and caching query: ', E_USER_ERROR);
              return -1;
          }
-        $this->query_cache[] = $query;
-        return count($this->query_cache)-1;
+         $this->query_cache[] = $query;
+         return count($this->query_cache)-1;
      }
 
      /**
@@ -183,12 +179,10 @@ use PDOStatement;
       */
       public function delete($table, $condition, $params = [],$limit = '')
       {
-
          $limit = ( $limit == '' ) ? '' : ' LIMIT ' . $limit;
          $delete = "DELETE FROM {$table} WHERE {$condition} {$limit}";
 
-         if($this->query($delete,$params))
-         {
+         if($this->query($delete,$params)){
              return true;
          }
          return false;
@@ -206,8 +200,7 @@ use PDOStatement;
          $fieldString='';
          $values=[];
 
-         foreach($changes as $field=>$value)
-         {
+         foreach($changes as $field=>$value){
              $fieldString.=''.$field.'=?,';
              $values[]=$value;
          }
@@ -216,8 +209,7 @@ use PDOStatement;
 
          $sql = "UPDATE {$table} SET {$fieldString} WHERE {$condition}";
 
-         if($this->query($sql,$values))
-         {
+         if($this->query($sql,$values)){
              return true;
          }
          return false;
@@ -235,8 +227,7 @@ use PDOStatement;
          $valueString = '';
          $values = [];
 
-         foreach($fields as $field=>$value)
-         {
+         foreach($fields as $field=>$value){
              $fieldString .= '`'.$field.'`,';
              $valueString .= "?,";
              $values[] = $value;
@@ -246,8 +237,7 @@ use PDOStatement;
          $valueString = rtrim($valueString,',');
 
          $sql = "INSERT INTO {$table} ({$fieldString}) VALUES ({$valueString})";
-         if($this->query($sql,$values))
-         {
+         if($this->query($sql,$values)){
              return true;
          }
          return false;
@@ -258,25 +248,21 @@ use PDOStatement;
      {
          $this->connections[$this->active_connection]->beginTransaction();
          $query = $this->connections[$this->active_connection]->prepare($sql);
-         if(count($params))
-         {
+         if(count($params)){
              $x=1;
-             foreach($params as $param)
-             {
+             foreach($params as $param){
                 $query->bindValue($x,$param);
                  $x++;
              }
          }
-         try
-         {
+         try{
              $query->execute();
              $this->last = $query;
              $this->last_id = $this->connections[$this->active_connection]->lastInsertId();
              $this->connections[$this->active_connection]->commit();
              return true;
          }
-         catch(PDOException $e)
-         {
+         catch(PDOException $e){
             $this->connections[$this->active_connection]->rollback();
             return false;
          }
@@ -289,8 +275,7 @@ use PDOStatement;
      */
      public function get_rows($mode = false)
      {
-       if ($mode)
-       {
+       if ($mode){
           return $this->last->fetchAll(PDO::FETCH_ASSOC);
        }
        return $this->last->fetchAll(PDO::FETCH_OBJ);
@@ -302,29 +287,10 @@ use PDOStatement;
      */
      public function num_rows()
      {
-       if ($this->last == null)
-       {
-          throw new \Exception("Calling num_rows method on null. Please run a query first", 1);
+       if ($this->last == null){
+          throw new \BadMethodCallException("Calling num_rows method on null. Please run a query first", 1);
        }
        return $this->last->rowCount();
-     }
-
-     /**
-      * Gets the number of affected rows from the previous query
-      * @return int the number of affected rows
-      */
-     public function affected_rows()
-     {
-
-     }
-     /*
-     * sinatize data
-     * @param String the data to be sanitized
-     * @return String the sanitized data
-     */
-     public function sanitize_data( $data )
-     {
-
      }
 
      /**
