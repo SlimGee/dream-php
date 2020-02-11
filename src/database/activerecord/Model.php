@@ -10,7 +10,7 @@ use PDOException;
 /**
  * Model class
  */
-class Model
+abstract class Model
 {
     /**
      * database table
