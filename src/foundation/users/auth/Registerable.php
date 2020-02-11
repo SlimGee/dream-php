@@ -24,6 +24,7 @@ trait Registerable
             auth()->login($user);
         }
         notice("You have succefully registered");
-        return redirect_to($this->redirectTo);
+        $back = Session::has('login_back_link') ? Session::get('login_back_link') : $this->redirectTo;
+        return redirect_to($back);
     }
 }

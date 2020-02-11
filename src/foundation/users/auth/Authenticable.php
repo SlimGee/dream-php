@@ -14,6 +14,8 @@ trait Authenticable
     public function authenticate()
     {
         if (auth()->authenticate($this->user_params())) {
+            $back = Session::has('login_back_link') ? Session::get('login_back_link') : $this->redirectTo;
+            Session::erase('login_back_link');
             return redirect_to($this->redirectTo);
         }
         alert("There was an error with username or password");
