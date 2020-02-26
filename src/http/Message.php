@@ -292,7 +292,7 @@ class Message implements MessageInterface
     /**
      * Populate the httpHeaders properties
      */
-    protected function getHttpHeaders()
+    public function getHttpHeaders()
     {
         if (!$this->httpHeaders) {
             if (function_exists('apache_request_headers')) {

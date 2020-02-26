@@ -63,6 +63,17 @@ $form_for->setValue(function ($model,$action,$block_var,$attributes = NULL){
             echo "<input type='text' {$fallback} name='{$this->model}[{$name}]' {$attr_str}>";
         }
 
+        public function hidden_field($name, $value, $attributes=NULL)
+        {
+            $attr_str = '';
+            if (!is_null($attributes)) {
+                foreach($attributes->getValue() as $key => $value){
+                    $attr_str .= $key . "='" . $value->evaluate() . "' ";
+                }
+            }
+            echo "<input type='hidden' value='{$value}' name='{$this->model}[{$name}]' {$attr_str}>";
+        }
+
         public function password_field($name,$attributes = NULL)
         {
             $attr_str = '';
@@ -107,7 +118,7 @@ $form_for->setValue(function ($model,$action,$block_var,$attributes = NULL){
                     $attr_str .= $key . "='" . $value->evaluate() . "' ";
                 }
             }
-            echo "<label for='{$name}' {$attr_str}>{$name}</label>";
+            echo "<label {$attr_str}>{$name}</label>";
         }
 
         public function submit($name,$attributes = NULL)

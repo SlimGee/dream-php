@@ -12,8 +12,6 @@ class UploadedFile implements UploadedFileInterface
 {
     protected $info;
 
-    protected $field; //the original filename
-
     protected $randomize;
 
     protected $movedName = '';
@@ -25,9 +23,8 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Construct the object from the $_FILES array
      */
-    public function __construct($field,array $info,$randomize = false)
+    public function __construct(array $info,$randomize = false)
     {
-        $this->field = $field;
         $this->info = $info;
         $this->randomize = $randomize;
     }

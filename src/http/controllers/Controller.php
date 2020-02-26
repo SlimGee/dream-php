@@ -72,11 +72,11 @@ class Controller
             }
         };
 
+        ob_start();
         $hook('@before');
         $this->$action();
         $hook('@after');
 
-        ob_start();
         return $this->invokeView($request);
     }
 
@@ -87,29 +87,22 @@ class Controller
     {
         $accept = $request->getHeaderLine('Accept')[0];
         if ($accept && match($accept, '^application/([^+\s]+\+)?json')) {
-            return (new Response(200))->withBody(new TextStream(json_encode([
-                                            'data' => [
-                                                'status' => '200',
-                                                'details' => 'JSON api comming soon!'
-                                            ]
-                                        ])))
-                                      ->withHeader('Content-Type','application/json');
+            $content = ob_get_contents();
+            ob_end_clean();
+            return (new Response(200))->withBody(new TextStream($content))
+                                      ->withHeader('Content-Type', 'application/json');
         }
 
         if ($accept) {
-            foreach ($this as $key => $value) {
-                $var = new Variable($key);
-                $var->setValue($value);
-            }
+            register_view_data($this);
             if ($this->willRender) {
                 $view = new View('application');
             }
             $content = ob_get_contents();
             ob_end_clean();
             return (new Response(200))->withBody(new TextStream($content))
-                                      ->withHeader('Content-Type','text/html');
+                                      ->withHeader('Content-Type', 'text/html');
         }
-
-        return (new Response(400));
+        return (new Response(200));
     }
 }

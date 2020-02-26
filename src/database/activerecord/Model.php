@@ -141,7 +141,7 @@ abstract class Model
     {
         $return_array = [];
         foreach ($this->columns as $property) {
-            $return_array[$value] = $this->$property;
+            $return_array[$property] = $this->$property;
         }
         return $return_array;
     }

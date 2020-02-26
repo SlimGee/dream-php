@@ -8,7 +8,7 @@ class Cookie
 {
     public static function set($key, $value, $exp)
     {
-        setcookie($key, $value, time() + $exp);
+        setcookie($key, $value, time() + $exp, "/", "", 0);
     }
 
     public static function get($key)

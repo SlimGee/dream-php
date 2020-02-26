@@ -158,6 +158,16 @@ if (!function_exists('match')) {
     }
 }
 
+if (!function_exists('register_view_data')) {
+    function register_view_data($data)
+    {
+        foreach ($data as $key => $value) {
+            $var = new Variable($key);
+            $var->setValue($value);
+        }
+    }
+}
+
 if (!function_exists('a_clean')) {
     function a_clean($array)
     {
@@ -193,7 +203,10 @@ if (!function_exists('sanitize')) {
             if (is_array($item)) {
                 return sanitize($item);
             }
-            return htmlentities($item, ENT_NOQUOTES, 'utf-8');
+            if (is_string($item)) {
+                return htmlentities($item, ENT_NOQUOTES, 'utf-8');
+            }
+            return $item;
         }, $input);
     }
 }
@@ -214,7 +227,7 @@ if (!function_exists('get_fallback_vals')) {
 if (!function_exists('validation_errors')) {
     function validation_errors()
     {
-        foreach (app()->validator()->getErrors() as $error) {
+        foreach (Dream\Validator::get_errors() as $error) {
             alert($error);
         }
     }
@@ -362,8 +375,10 @@ foreach (\Dream\Route\Router::$post as $key => $value) {
 
 function render_view($name)
 {
-    app()->registry()->get('controller')->will_render = false;
-    app()->registry()->get('controller')->set_view_vars();
+    app()->registry()->get('controller')->willRender = false;
+    register_view_data(
+        app()->registry()->get('controller')
+    );
     $parser = new Parser(
         new Lexer(
             new Stream(load_file($name))

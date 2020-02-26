@@ -13,6 +13,10 @@ class ActiveRecord implements AuthServiceInterface
 {
     public function attempt(AuthInterface $auth, $cred, $blueprint)
     {
+        if (!isset($cred[$blueprint['username']])) {
+            return $auth->authenticate($cred);
+        }
+        
         $user = User::find_by($blueprint['username'], $cred[$blueprint['username']]);
         if ($user && password_verify($cred['password'], $user->{$blueprint['password']})) {
             if (isset($cred[$blueprint['remember']])) {

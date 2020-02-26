@@ -1,6 +1,5 @@
 <?php
 namespace Dream;
-use Dream\Registry;
 /**
  *
  */
@@ -45,7 +44,7 @@ class Validator
 
                     case 'is_numeric':
                         if(!is_numeric($value))
-                            $errors[] = "{$display} has to be a numeric.";
+                            $errors[] = "{$display} should be numeric.";
                         break;
 
                     case 'valid_email':
@@ -53,8 +52,8 @@ class Validator
                             $errors[] = "{$display} must be valid.";
                         break;
                     case 'uniq':
-                        if (Registry::get('db')->find_first($rule_value,"{$item} = ?",[$value])) {
-                            $errors[] = "{$display} is already exists.";
+                        if (app()->registry()->get('db')->find_first($rule_value,"{$item} = ?",[$value])) {
+                            $errors[] = "{$display} already exists.";
                         }
                         break;
                     case 'selection':

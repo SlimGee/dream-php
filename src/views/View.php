@@ -32,8 +32,8 @@ class View
                  continue;
              }
              $var = new Variable($method->name);
-             $var->setValue(function () use ($helper,$method){
-                 return call_user_func_array([$helper,$method->name],func_get_args());
+             $var->setValue(function () use ($helper, $method){
+                 return call_user_func_array([$helper, $method->name], func_get_args());
              });
          }
      }

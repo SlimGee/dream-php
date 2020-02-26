@@ -103,9 +103,14 @@ class Response extends Message implements ResponseInterface
      */
     public function send()
     {
-        foreach ($this->getHeaders() as $name => $values) {
+        header('HTTP/1.1 ' . $this->getStatusCode() . ' ' . $this->getReasonPhrase());
+        $headers = $this->getHeaders();
+        foreach ($this->getHttpHeaders() as $key => $value) {
+            unset($headers[$key]);
+        }
+        foreach ($headers as $name => $values) {
            foreach ($values as $value) {
-               header(sprintf('%s: %s', $name, $value), false);
+              header(sprintf('%s: %s', $name, $value), false);
            }
         }
         echo $this->getBody()->getContents();

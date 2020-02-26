@@ -187,6 +187,16 @@ class App extends Container
     {
         return $this->registry;
     }
+
+    public function host()
+    {
+        return $this->config->app->host;
+    }
+
+    public function session()
+    {
+        return $this->registry->get('session');
+    }
     /**
      * get the appliation's instance
      * @return Dream\Kernel\App The appliation

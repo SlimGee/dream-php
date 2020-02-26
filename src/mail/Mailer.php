@@ -4,6 +4,7 @@ namespace Dream\Mail;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dream\Views\View;
 
 require 'lib/phpmailer/src/Exception.php';
 require 'lib/phpmailer/src/PHPMailer.php';
@@ -47,5 +48,18 @@ class Mailer
             self::mail('Admin', 'givenyslim12@gmail.com', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             return false;
         }
+    }
+
+    public static function make($view, $data = [])
+    {
+        register_view_data($data);
+        $default_action_view = app()->registry()->get('action_view');
+        app()->registry()->set('action_view', 'mail/' . $view);
+        ob_start();
+        $view = new View('mailer');
+        $content = ob_get_contents();
+        ob_end_clean();
+        app()->registry()->set('action_view', $default_action_view);
+        return $content;
     }
 }

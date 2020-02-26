@@ -218,10 +218,50 @@ class ServerRequest extends Request implements ServerRequestInterface
         if (!$this->uploadedFiles) {
             $this->uploadedFileInfo = $_FILES;
             foreach ($this->uploadedFileInfo as $field => $value) {
-                $this->uploadedFiles[$field] = new UploadedFile($field,$value);
+                $this->uploadedFiles[$field] = $this->convertUploadedFile($value);
             }
         }
         return $this->uploadedFiles;
+    }
+
+    public function convertUploadedFile($file)
+    {
+        $file = fixPhpArrays($file);
+        if (is_array($file)) {
+            $keys = array_keys($file);
+            $fkeys = ['error', 'name', 'size', 'tmp_name', 'type'];
+            sort($fkeys);
+            sort($keys);
+            if ($keys == $fkeys) {
+                return new UploadedFile($file);
+            } else {
+                $file = array_map([$this,'convertUploadedFile'], $file);
+            }
+        }
+        return $file;
+    }
+
+    public function fixPhpArrays($files)
+    {
+        $keys = array_keys($files);
+        if (!isset($files['name']) || !is_array($files['name'])) {
+            return $files;
+        }
+        $data = $files;
+        foreach ($keys as $value) {
+            unset($files[$value]);
+        }
+        foreach ($data['name'] as $key => $name) {
+            $files[$key] = $this->fixPhpArrays(array(
+                    'error' => $data['error'][$key],
+                    'name' => $name,
+                    'type' => $data['type'][$key],
+                    'tmp_name' => $data['tmp_name'][$key],
+                    'size' => $data['size'][$key],
+                )
+            );
+        }
+        return $files;
     }
 
     /**

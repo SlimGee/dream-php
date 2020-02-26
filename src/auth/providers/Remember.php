@@ -14,7 +14,7 @@ class Remember implements AuthServiceInterface
     public function attempt(AuthInterface $auth, $cred, $blueprint)
     {
         if (isset($cred['rememberToken'])) {
-            $user = User::find_by($blueprint['remember'], $cred[$blueprint['remember']]);
+            $user = User::find_by($blueprint['remember'], $cred['rememberToken']);
             if ($user) {
                 $auth->login($user);
                 return true;

@@ -29,7 +29,7 @@ class Auth implements AuthInterface
         }
         $this->storage = $storage;
         $this->key = "current_user";
-        $this->rememberMeEx = 60 * 60 * 2;
+        $this->rememberMeEx = 604800;
     }
 
     /**
@@ -74,9 +74,24 @@ class Auth implements AuthInterface
      */
     public function user()
     {
-        return User::find(
-            $this->storage->get($this->key)
-        );
+        if (!$this->hasIdentity()) {
+            return false;
+        }
+        if ($this->storage->has($this->key)) {
+            return \App\Models\User::find(
+                $this->storage->get($this->key)
+            );
+        }
+        if (app()->registry()->get('cookie')::has($this->key)) {
+            $user = \App\Models\User::find_by($this->cred['remember'],
+                app()->registry()->get('cookie')::get($this->key)
+            );
+            if (!$user) {
+                return false;
+            }
+            $this->login($user);
+            return $user;
+        }
     }
 
     /**
@@ -98,10 +113,12 @@ class Auth implements AuthInterface
         \Dream\Route\Route::get('/register', 'users#register')->name('new_user');
         \Dream\Route\Route::get('/login', 'users#login')->name('login');
         \Dream\Route\Route::get('/logout', 'users#logout')->name('logout');
-        \Dream\Route\Route::get('/password/reset', 'users#attempt')->name('password_reset');
-        \Dream\Route\Route::get('/password/reset/verify', 'users#verify')->name('token_verify');
-        \Dream\Route\Route::post('/authenticate', 'users#authenticate')->name('authenticate');
-        \Dream\Route\Route::post('/create', 'users#createAction')->name('users_create');
+        \Dream\Route\Route::get('/users/:id/update', 'users#update')->name('users_update');
+        \Dream\Route\Route::get('/users/password/reset', 'users#attempt')->name('password_reset');
+        \Dream\Route\Route::post('/users/password/token/send', 'users#token')->name('send_pass_token');
+        \Dream\Route\Route::get('/users/password/reset/verify', 'users#verify')->name('token_verify');
+        \Dream\Route\Route::post('/users/authenticate', 'users#authenticate')->name('authenticate');
+        \Dream\Route\Route::post('/users/create', 'users#createAction')->name('users_create');
         \Dream\Route\Route::post('/users/password/new', 'users#newPassword')->name('new_password');
     }
 }
