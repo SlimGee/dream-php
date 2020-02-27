@@ -1,0 +1,21 @@
+{
+    "name": "dream/container",
+    "description": "The container package of Dream framework",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Given Ncube",
+            "email": "givenylsim12@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dream\\Container\\": ""
+        }
+    }
+}

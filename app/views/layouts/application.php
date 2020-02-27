@@ -8,7 +8,7 @@
     <meta name="description" content="The fastes way to find rented accomodation in Zimbabwe">
     <meta name="application-name" content="sKotch">
 
-    <title>{= title}</title>
+    <title>Make:migration</title>
 
     { style_tag 'application' }
     { js_include_tag 'application' }

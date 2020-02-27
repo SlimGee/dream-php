@@ -193,6 +193,11 @@ class App extends Container
         return $this->config->app->host;
     }
 
+    public function db()
+    {
+        return $this->registry->get('db');
+    }
+
     public function session()
     {
         return $this->registry->get('session');

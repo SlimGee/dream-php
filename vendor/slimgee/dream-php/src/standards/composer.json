@@ -1,0 +1,21 @@
+{
+    "name": "dream/standards",
+    "description": "The standards dream package",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Given Ncube",
+            "email": "givenyslim12@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7"
+    },
+    "atoload": {
+        "psr-4": {
+            "Dream\\Standards\\": ""
+        }
+    }
+}
