@@ -144,6 +144,13 @@ if (!function_exists('split')) {
     }
 }
 
+if (!function_exists('views_path')) {
+    function views_path()
+    {
+        return app_path() . 'views/';
+    }
+}
+
 if (!function_exists('match')) {
     function match($string, $pattern)
     {
@@ -193,6 +200,27 @@ if (!function_exists('fallback_vals')) {
         unset($data['password']);
         unset($data['password_confirmation']);
         Session::set('fallback_vals',$data);
+    }
+}
+
+if (!function_exists('app_path')) {
+    function app_path()
+    {
+        return ROOT . DS . 'app/';
+    }
+}
+
+if (!function_exists('models_path')) {
+    function models_path()
+    {
+        return app_path() . 'models/';
+    }
+}
+
+if (!function_exists('controllers_path')) {
+    function controllers_path()
+    {
+        return app_path() . '/http/controllers/';
     }
 }
 

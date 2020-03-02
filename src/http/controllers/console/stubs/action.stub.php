@@ -1,0 +1,7 @@
+    /**
+     *
+     */
+    public function {{ name }}()
+    {
+        // code...
+    }
